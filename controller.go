@@ -16,9 +16,10 @@ const (
 	PORT = "10000"
 	TYPE = "tcp"
 )
-
+// list of availabke modules
 var services = []string{"r_queue", "render", "p_queue", "parser", "f_queue", "formatter"}
 
+//errors checker
 func cerr(err error) {
 	if err != nil {
 		log.Fatal(err)
@@ -27,6 +28,7 @@ func cerr(err error) {
 }
 
 func main() {
+	//make channels map and starting gorotines
 	channels := make(map[string]chan s.Reg_data)
 	for _, v := range services {
 		channels[v] = make(chan s.Reg_data)
@@ -34,6 +36,7 @@ func main() {
 	}
 
 	var err error
+	//listen 
 	listen, err := net.Listen(TYPE, IP+":"+PORT)
 	cerr(err)
 

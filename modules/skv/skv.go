@@ -23,6 +23,8 @@ func setData(from *s.Reg_data, servers map[string]s.KV) {
 	from.Result = "OK"
 }
 
+
+// prestart function
 func prestart(c_from chan s.Reg_data, servers map[string]s.KV) {
 	var resp s.Reg_data
 	from := <-c_from
@@ -45,12 +47,12 @@ func Reg(c chan s.Reg_data) {
 	fmt.Println("Start")
 	servers := make(map[string]s.KV)
 	for {
-
+		//if list of servers is empty then call prestart function. we need to get 1 "set" for starting
 		if len(servers) == 0 {
 			prestart(c, servers)
 			continue
 		}
-
+		// servers list loop
 		for _, v := range servers {
 			rcv_data := <-c
 			if rcv_data.Action == "set" {
